@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Antifragile Momentum | B Corp - CTTC 2026</title>
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --navy: #0a1628;
+            --navy-mid: #111d33;
+            --navy-light: #18283f;
+            --gold: #c9a84c;
+            --gold-light: #e2c97e;
+            --emerald: #27ae60;
+            --crimson: #e74c3c;
+            --text: #e4e8ef;
+            --text-muted: #8a95a8;
+            --white: #ffffff;
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, Helvetica, Arial, sans-serif;
+            background: var(--navy);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        .separator { width: 80px; height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light)); border: none; border-radius: 2px; margin: 16px auto 0; }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            padding: 80px 24px 60px;
+            background: linear-gradient(170deg, #060e1c 0%, var(--navy) 40%, #0f1e35 100%);
+            position: relative;
+        }
+        .hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 600px 400px at 50% 30%, rgba(201,168,76,.07), transparent 70%);
+            pointer-events: none;
+        }
+        .hero-badge {
+            display: inline-block;
+            padding: 5px 20px;
+            border: 1px solid var(--gold);
+            border-radius: 30px;
+            font-size: 0.75rem;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 24px;
+        }
+        .hero h1 {
+            font-size: clamp(2.2rem, 5vw, 3.2rem);
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 12px;
+        }
+        .hero h1 span { color: var(--gold); }
+        .hero .subtitle {
+            font-size: clamp(0.95rem, 2vw, 1.15rem);
+            color: var(--text-muted);
+            font-style: italic;
+            max-width: 580px;
+            margin: 0 auto 28px;
+        }
+        .hero .team { font-size: 0.9rem; color: var(--text); }
+        .hero .team strong { color: var(--gold-light); font-weight: 600; }
+
+        /* Sections */
+        section { padding: 60px 0; }
+        section:nth-child(even) { background: var(--navy-mid); }
+        .section-title {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--white);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 6px;
+        }
+
+        /* Metrics Grid */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+        .metric-card {
+            background: var(--navy-light);
+            border: 1px solid rgba(201,168,76,.12);
+            border-radius: 12px;
+            padding: 24px 16px;
+            text-align: center;
+            transition: transform 0.25s, border-color 0.25s;
+        }
+        .metric-card:hover { transform: translateY(-3px); border-color: var(--gold); }
+        .metric-card.highlight { background: linear-gradient(135deg, rgba(201,168,76,.10), rgba(201,168,76,.03)); border-color: var(--gold); }
+        .metric-value { font-size: 1.8rem; font-weight: 700; color: var(--gold); margin-bottom: 4px; }
+        .metric-label { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 1.2px; color: var(--text-muted); }
+
+        /* Components */
+        .components-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: 40px;
+        }
+        .comp-card {
+            background: var(--navy);
+            border-left: 3px solid var(--gold);
+            border-radius: 0 10px 10px 0;
+            padding: 24px;
+        }
+        .comp-card h3 { font-size: 1rem; color: var(--gold-light); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.8px; }
+        .comp-card p { font-size: 0.9rem; color: var(--text-muted); }
+
+        /* VIX Section */
+        .vix-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 40px;
+        }
+        .vix-card { border-radius: 12px; padding: 24px; text-align: center; }
+        .vix-card.risk-on { background: rgba(39,174,96,.1); border: 1px solid var(--emerald); }
+        .vix-card.neutral { background: rgba(201,168,76,.06); border: 1px solid rgba(201,168,76,.3); }
+        .vix-card.risk-off { background: rgba(231,76,60,.08); border: 1px solid var(--crimson); }
+        .vix-card h4 { margin-bottom: 8px; font-size: 1rem; }
+        .vix-card .condition { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 6px; }
+        .vix-card .action { font-size: 1.1rem; font-weight: 700; }
+        .green { color: var(--emerald); }
+        .red { color: var(--crimson); }
+        .gold-text { color: var(--gold); }
+
+        /* Stress table */
+        .stress-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 32px;
+        }
+        .stress-table th, .stress-table td {
+            padding: 12px 16px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,.06);
+        }
+        .stress-table th {
+            color: var(--gold);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .stress-table td { font-size: 0.9rem; }
+
+        /* Risk section */
+        .risk-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+        .risk-item { text-align: center; padding: 20px; }
+        .risk-item .value { font-size: 1.5rem; font-weight: 700; margin-bottom: 4px; }
+        .risk-item .label { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); }
+
+        /* Contact */
+        .contact-section {
+            text-align: center;
+            padding: 60px 24px;
+            background: linear-gradient(170deg, var(--navy-mid), var(--navy));
+        }
+        .contact-section h2 { font-size: 1.5rem; color: var(--white); margin-bottom: 24px; }
+        .contact-links { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; }
+        .contact-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 28px;
+            border: 1px solid var(--gold);
+            border-radius: 8px;
+            color: var(--gold);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: background 0.25s, color 0.25s;
+        }
+        .contact-link:hover { background: var(--gold); color: var(--navy); }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 24px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            border-top: 1px solid rgba(255,255,255,.05);
+        }
+
+        @media (max-width: 700px) {
+            .vix-grid { grid-template-columns: 1fr; }
+            .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Hero -->
+<header class="hero">
+    <div class="container">
+        <div class="hero-badge">CTTC 2026 &mdash; Finale</div>
+        <h1>Antifragile <span>Momentum</span></h1>
+        <p class="subtitle">&laquo; Acheter la peur, vendre la complaisance &raquo;</p>
+        <p class="team"><strong>Mouhamadou Bocand&eacute;</strong> &mdash; &Eacute;quipe B Corp &mdash; HEC Montr&eacute;al</p>
+        <hr class="separator">
+    </div>
+</header>
+
+<!-- Key Metrics -->
+<section>
+    <div class="container">
+        <h2 class="section-title">Chiffres cl&eacute;s (2015&ndash;2024)</h2>
+        <hr class="separator">
+        <div class="metrics-grid">
+            <div class="metric-card highlight">
+                <div class="metric-value">+178,24%</div>
+                <div class="metric-label">Rendement Total</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">10,8%</div>
+                <div class="metric-label">CAGR</div>
+            </div>
+            <div class="metric-card highlight">
+                <div class="metric-value">1,14</div>
+                <div class="metric-label">Sharpe Ratio</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">1,64</div>
+                <div class="metric-label">Sortino Ratio</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">13,80%</div>
+                <div class="metric-label">Max Drawdown</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">9,42%</div>
+                <div class="metric-label">Volatilit&eacute;</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">1 398</div>
+                <div class="metric-label">Trades</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">54,2%</div>
+                <div class="metric-label">Win Rate</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Innovation VIX -->
+<section>
+    <div class="container">
+        <h2 class="section-title">L'innovation : Filtre VIX Contrarian</h2>
+        <hr class="separator">
+        <p style="text-align:center; margin-top:20px; color:var(--text-muted); max-width:680px; margin-left:auto; margin-right:auto;">
+            Sur 6 filtres de r&eacute;gime test&eacute;s, 5 d&eacute;truisent de la valeur. Un seul fonctionne&nbsp;: le filtre <strong style="color:var(--gold)">contrarian</strong>, qui inverse la logique conventionnelle.
+        </p>
+        <div class="vix-grid">
+            <div class="vix-card risk-on">
+                <h4 class="green">RISK ON</h4>
+                <div class="condition">VIX &gt; 30 &mdash; 5,7% du temps</div>
+                <div class="action green">+20% exposition</div>
+                <p style="font-size:0.82rem; color:var(--text-muted); margin-top:8px;">Rend. moyen : +0,18%/jour</p>
+            </div>
+            <div class="vix-card neutral">
+                <h4 class="gold-text">NEUTRAL</h4>
+                <div class="condition">11 &le; VIX &le; 30 &mdash; 83,7% du temps</div>
+                <div class="action gold-text">Exposition normale</div>
+                <p style="font-size:0.82rem; color:var(--text-muted); margin-top:8px;">Rend. moyen : +0,08%/jour</p>
+            </div>
+            <div class="vix-card risk-off">
+                <h4 class="red">RISK OFF</h4>
+                <div class="condition">VIX &lt; 11 &mdash; 10,6% du temps</div>
+                <div class="action red">&minus;30% exposition</div>
+                <p style="font-size:0.82rem; color:var(--text-muted); margin-top:8px;">Rend. moyen : +0,05%/jour</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Architecture -->
+<section>
+    <div class="container">
+        <h2 class="section-title">Architecture : 5 composantes</h2>
+        <hr class="separator">
+        <div class="components-grid">
+            <div class="comp-card">
+                <h3>Sector Momentum (60%)</h3>
+                <p>Top 2 secteurs par momentum 10 jours. Rebalancement hebdomadaire. 474 trades sur 10 ans.</p>
+            </div>
+            <div class="comp-card">
+                <h3>MIM Intraday (30%)</h3>
+                <p>D&eacute;tection de gap-up &gt; 0,5%. Strat&eacute;gie mean-reversion intraday. 898 trades.</p>
+            </div>
+            <div class="comp-card">
+                <h3>VIX Contrarian Filter</h3>
+                <p>Multiplicateur d'exposition : &times;1,20 quand VIX &gt; 30, &times;0,70 quand VIX &lt; 11. Le seul filtre positif parmi 6 test&eacute;s.</p>
+            </div>
+            <div class="comp-card">
+                <h3>FOMC Tactical Overlay</h3>
+                <p>R&eacute;duction d'exposition 50% en J-2/J-1. Pause le jour FOMC. Protection macro.</p>
+            </div>
+            <div class="comp-card">
+                <h3>Beta Overlay (Hedge)</h3>
+                <p>Couverture SH 10-15% si VIX &gt; 22 pendant FOMC. 26 trades de protection.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stress Testing -->
+<section>
+    <div class="container">
+        <h2 class="section-title">Stress Testing : R&eacute;silience aux crises</h2>
+        <hr class="separator">
+        <table class="stress-table">
+            <thead>
+                <tr>
+                    <th>Crise</th>
+                    <th>Strat&eacute;gie</th>
+                    <th>S&amp;P 500</th>
+                    <th>Protection</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>COVID 2020</td>
+                    <td class="green">&minus;13,8%</td>
+                    <td class="red">&minus;33,9%</td>
+                    <td>2,5&times;</td>
+                </tr>
+                <tr>
+                    <td>Volmageddon 2018</td>
+                    <td class="green">&minus;3,5%</td>
+                    <td class="red">&minus;10,2%</td>
+                    <td>2,9&times;</td>
+                </tr>
+                <tr>
+                    <td>Q4 2018</td>
+                    <td class="green">&minus;6,2%</td>
+                    <td class="red">&minus;19,8%</td>
+                    <td>3,2&times;</td>
+                </tr>
+                <tr>
+                    <td>Bear 2022</td>
+                    <td class="green">&minus;2,8%</td>
+                    <td class="red">&minus;25,4%</td>
+                    <td>9,1&times;</td>
+                </tr>
+            </tbody>
+        </table>
+        <p style="text-align:center; margin-top:24px; font-size:0.85rem; color:var(--text-muted);">
+            En moyenne, le drawdown de la strat&eacute;gie est <strong style="color:var(--gold)">2,9&times; inf&eacute;rieur</strong> au S&amp;P 500 pendant les crises.
+        </p>
+    </div>
+</section>
+
+<!-- Risk Metrics -->
+<section>
+    <div class="container">
+        <h2 class="section-title">Gestion du risque</h2>
+        <hr class="separator">
+        <div class="risk-grid">
+            <div class="risk-item">
+                <div class="value green">&minus;0,88%</div>
+                <div class="label">VaR 95% (1 jour)</div>
+            </div>
+            <div class="risk-item">
+                <div class="value gold-text">&minus;1,46%</div>
+                <div class="label">VaR 99% (1 jour)</div>
+            </div>
+            <div class="risk-item">
+                <div class="value green">+0,81</div>
+                <div class="label">Skewness</div>
+            </div>
+            <div class="risk-item">
+                <div class="value gold-text">86,2%</div>
+                <div class="label">P(return &gt; 0) Monte Carlo 1Y</div>
+            </div>
+            <div class="risk-item">
+                <div class="value green">+12%</div>
+                <div class="label">Alpha moyen en bear market</div>
+            </div>
+            <div class="risk-item">
+                <div class="value gold-text">0,74%</div>
+                <div class="label">Drawdown m&eacute;dian</div>
+            </div>
+        </div>
+        <p style="text-align:center; margin-top:28px; font-size:0.88rem; color:var(--text-muted);">
+            Distribution asym&eacute;trique &agrave; droite (skewness positive) : les gains extr&ecirc;mes sont plus fr&eacute;quents que les pertes extr&ecirc;mes.<br>
+            M&ecirc;me avec 1% de co&ucirc;ts de transaction, le Sharpe reste <strong style="color:var(--gold)">sup&eacute;rieur &agrave; 1,0</strong>.
+        </p>
+    </div>
+</section>
+
+<!-- Bear Market Alpha -->
+<section>
+    <div class="container">
+        <h2 class="section-title">Alpha en march&eacute; baissier</h2>
+        <hr class="separator">
+        <div class="metrics-grid" style="margin-top:40px;">
+            <div class="metric-card">
+                <div class="metric-value" style="color:var(--emerald);">+5,0%</div>
+                <div class="metric-label">Alpha 2018 (vs RSP)</div>
+            </div>
+            <div class="metric-card highlight">
+                <div class="metric-value" style="color:var(--emerald);">+19,0%</div>
+                <div class="metric-label">Alpha 2022 (vs RSP)</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">+13,26%</div>
+                <div class="metric-label">Alpha cumul&eacute; vs RSP</div>
+            </div>
+        </div>
+        <p style="text-align:center; margin-top:24px; font-size:0.88rem; color:var(--text-muted);">
+            &laquo; Quand le march&eacute; chute, notre filtre <strong style="color:var(--gold)">augmente</strong> l'exposition &mdash; et c'est l&agrave; que l'alpha se construit. &raquo;
+        </p>
+    </div>
+</section>
+
+<!-- Contact -->
+<section class="contact-section">
+    <div class="container">
+        <h2>Contact</h2>
+        <hr class="separator" style="margin-bottom: 32px;">
+        <div class="contact-links">
+            <a href="mailto:bocandemohamed@gmail.com" class="contact-link">
+                bocandemohamed@gmail.com
+            </a>
+            <a href="https://www.linkedin.com/in/mohamed-bocande-a15259203/" target="_blank" rel="noopener" class="contact-link">
+                LinkedIn
+            </a>
+        </div>
+        <p style="margin-top:32px; font-size:0.85rem; color:var(--text-muted);">
+            Mouhamadou Bocand&eacute; &mdash; &Eacute;quipe B Corp &mdash; HEC Montr&eacute;al
+        </p>
+    </div>
+</section>
+
+<footer>
+    <div class="container">
+        Antifragile Momentum &mdash; B Corp &mdash; CTTC 2026
+    </div>
+</footer>
+
+</body>
+</html>
